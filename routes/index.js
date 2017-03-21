@@ -6,4 +6,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Quiz' });
 });
 
+// Pagina de creditos
+router.get('/author', function(req, res, next) {
+    res.render('author');
+});
+
 module.exports = router;
