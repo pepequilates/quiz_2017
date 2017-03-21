@@ -3,28 +3,36 @@
 <head>
     <meta charset="utf-8">
     <title>Preguntas</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet'
+          type='text/css'
+          media='only screen and (min-width: 800px) and (min-device-width: 600px)'
+          href='/stylesheets/wide.css'/>
+    <link rel='stylesheet'
+          type='text/css'
+          media='only screen and (max-width: 480px)'
+          href='/stylesheets/smartphone.css'/>
 </head>
 <body>
-<header>
-    <h2>Quiz: el juego de las preguntas</h2>
-</header>
+<div id="page">
+    <header class="main" id="mainHeader">
+        <h1>Quiz<span class="no-narrow">: el juego de las preguntas</span></h1>
+    </header>
 
-<nav>
-<a href="/">Inicio</a>
-<a href="/author">Créditos</a>
-</nav>
+    <nav class="main" id="mainNav" role="navigation">
+        <a href="/">Inicio</a>
+        <a href="/author">Créditos</a>
+    </nav>
 
-<section>
-    <div>
-        <%- body %>
-    </div>
-</section>
+    <section class="main" id="mainSection">
+            <%- body %>
+    </section>
 
-<footer>
-    <a href="http://es.wikipedia.org/wiki/Quiz">
-        ¿Qué es un Quiz?</a>
-</footer>
-
+    <footer class="main" id="mainFooter">
+        <a href="http://es.wikipedia.org/wiki/Quiz">
+            ¿Qué es un Quiz?</a>
+    </footer>
+</div>
 </body>
 </html>
