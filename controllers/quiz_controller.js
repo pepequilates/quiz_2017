@@ -60,18 +60,20 @@ exports.create = function (req, res, next) {
     // guarda en DB los campos pregunta y respuesta de quiz
     quiz.save({fields: ["question", "answer"]})
     .then(function (quiz) {
+        req.flash('success', 'Quiz creado con éxito.');
         res.redirect('/quizzes/' + quiz.id);
     })
     .catch(Sequelize.ValidationError, function (error) {
 
-        console.log('Errores en el formulario:');
+        req.flash('error', 'Errores en el formulario:');
         for (var i in error.errors) {
-            console.log(error.errors[i].value);
+            req.flash('error', error.errors[i].value);
         }
 
         res.render('quizzes/new', {quiz: quiz});
     })
     .catch(function (error) {
+        req.flash('error', 'Error al crear un Quiz: ' + error.message);
         next(error);
     });
 };
@@ -92,18 +94,20 @@ exports.update = function (req, res, next) {
 
     req.quiz.save({fields: ["question", "answer"]})
     .then(function (quiz) {
+        req.flash('success', 'Quiz editado con éxito.');
         res.redirect('/quizzes/' + req.quiz.id);
     })
     .catch(Sequelize.ValidationError, function (error) {
 
-        console.log('Errores en el formulario:');
+        req.flash('error', 'Errores en el formulario:');
         for (var i in error.errors) {
-            console.log(error.errors[i].value);
+            req.flash('error', error.errors[i].value);
         }
 
         res.render('quizzes/edit', {quiz: req.quiz});
     })
     .catch(function (error) {
+        req.flash('error', 'Error al editar el Quiz: ' + error.message);
         next(error);
     });
 };
@@ -114,9 +118,11 @@ exports.destroy = function (req, res, next) {
 
     req.quiz.destroy()
     .then(function () {
+        req.flash('success', 'Quiz borrado con éxito.');
         res.redirect('/quizzes');
     })
     .catch(function (error) {
+        req.flash('error', 'Error al editar el Quiz: ' + error.message);
         next(error);
     });
 };
