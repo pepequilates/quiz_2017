@@ -3,6 +3,7 @@ var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
 var tipController = require('../controllers/tip_controller');
+var userController = require('../controllers/user_controller');
 
 
 /* GET home page. */
@@ -18,6 +19,18 @@ router.get('/author', function(req, res, next) {
 
 // Autoload de rutas que usen :quizId
 router.param('quizId', quizController.load);
+router.param('userId', userController.load);
+
+
+// Definición de rutas de cuenta
+router.get('/users',                    userController.index);   // listado usuarios
+router.get('/users/:userId(\\d+)',      userController.show);    // ver un usuario
+router.get('/users/new',                userController.new);     // formulario sign un
+router.post('/users',                   userController.create);  // registrar usuario
+router.get('/users/:userId(\\d+)/edit', userController.edit);     // editar información de cuenta
+router.put('/users/:userId(\\d+)',      userController.update);   // actualizar información de cuenta
+router.delete('/users/:userId(\\d+)',   userController.destroy);  // borrar cuenta
+
 
 
 // Definición de rutas de /quizzes

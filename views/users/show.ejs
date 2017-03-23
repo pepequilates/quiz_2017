@@ -1,0 +1,33 @@
+<h1>
+    Usuario:
+</h1>
+
+<ul>
+    <li>
+        Username:
+        <b><%= user.username %></b>
+    </li>
+
+    <li>
+        Es Administrador:
+        <b><%= user.isAdmin ? "Si" : "No" %></b>
+    </li>
+
+</ul>
+
+<p>
+    <a href="/users/<%= user.id %>/edit">
+        <button type="button"> Editar</button>
+    </a>
+
+    <a href="/users/<%= user.id %>?_method=DELETE">
+        <button type="button"
+                onClick="return confirm('Borrar cuenta: <%= user.username %>');">
+            Borrar
+        </button>
+    </a>
+</p>
+
+<a href="/users">
+    <button type="button">Volver</button>
+</a>

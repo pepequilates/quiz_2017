@@ -1,0 +1,25 @@
+<h1>
+    Usuarios
+</h1>
+
+<table>
+    <% for (var i in users) { %>
+    <tr>
+        <td>
+            <a href="/users/<%= users[i].id %>" ><%= users[i].username %></a>
+            <%= users[i].isAdmin ? "(admin)" : "" %>
+        </td>
+        <td>
+            <a href="/users/<%= users[i].id %>/edit"><button>editar</button></a>
+        </td>
+        <td>
+            <a href="/users/<%= users[i].id %>?_method=DELETE"
+               onClick="return confirm('Borrar cuenta: <%= users[i].username %>');">
+                <button>borrar</button>
+            </a>
+        </td>
+    </tr>
+    <%  } %>
+</table>
+
+<a href="/users/new"><button type="button">Crear usuario</button></a>

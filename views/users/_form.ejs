@@ -1,0 +1,51 @@
+<script>
+    function confirmPassword() {
+        var pw1 = document.getElementById('user_password').value;
+        var pw2 = document.getElementById('user_confirm_password').value;
+
+        if (!pw1 || !pw2) {
+            alert('Debe rellenar los campos de Password y Confirmación.');
+            return false;
+        }
+
+        if (pw1 === pw2) {
+            return true;
+        } else {
+            alert('Los passwords introducidos no coinciden.');
+            return false;
+        }
+    }
+</script>
+
+
+<ul>
+    <li>
+        <% if ( !user.id) { %>
+        <label for="preg" class="rem">Username:</label>
+        <input type="text" id="username" name="username" value="<%= user.username %>" autocomplete="off"/>
+        <% } else { %>
+        Username: <%= user.username %>
+        <% } %>
+    </li>
+
+    <li>
+        <label for="user_password" class="rem">Password:</label>
+        <input type="password" id="user_password" name="password" autocomplete="off"/>
+    </li>
+
+    <li>
+        <label for="user_confirm_password" class="rem">Confirmar Password:</label>
+        <input type="password" id="user_confirm_password" autocomplete="off"/>
+
+    </li>
+</ul>
+
+<div>
+    <a href="/">
+        <button type="button">Cancelar</button>
+    </a>
+</div>
+
+<div>
+    <input type="submit" value="Guardar" onclick="return confirmPassword()">
+</div>
