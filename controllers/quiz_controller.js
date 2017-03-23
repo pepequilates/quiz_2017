@@ -1,6 +1,20 @@
 var models = require("../models");
 
 
+// Autoload el quiz asociado a :quizId
+exports.load = function (req, res, next, quizId) {
+
+    var quiz = models.Quiz.findById(Number(quizId));
+
+    if (quiz) {
+        req.quiz = quiz;
+        next();
+    } else {
+        throw new Error('No existe ningún quiz con id=' + quizId);
+    }
+};
+
+
 // GET /quizzes
 exports.index = function (req, res, next) {
 
@@ -13,16 +27,12 @@ exports.index = function (req, res, next) {
 // GET /quizzes/:quizId
 exports.show = function (req, res, next) {
 
-    var quizId = Number(req.params.quizId);
+    var answer = req.query.answer || '';
 
-    var quiz = models.Quiz.findById(quizId);
-
-    if (quiz) {
-        res.render('quizzes/show', {quiz: quiz});
-    } else {
-        next(new Error('No existe ningún quiz con id=' + quizId));
-    }
+    res.render('quizzes/show', {quiz: req.quiz});
 };
+
+
 
 
 // GET /quizzes/new
@@ -57,52 +67,28 @@ exports.create = function (req, res, next) {
 // GET /quizzes/:quizId/edit
 exports.edit = function (req, res, next) {
 
-    var quizId = Number(req.params.quizId);
-
-    var quiz = models.Quiz.findById(quizId);
-
-    if (quiz) {
-        res.render('quizzes/edit', {quiz: quiz});
-    } else {
-        next(new Error('No existe ningún quiz con id=' + quizId));
-    }
+    res.render('quizzes/edit', {quiz: req.quiz});
 };
 
 
 // PUT /quizzes/:quizId
 exports.update = function (req, res, next) {
 
-    var quizId = Number(req.params.quizId);
+    req.quiz.question = req.body.question;
+    req.quiz.answer = req.body.answer;
 
-    var quiz = models.Quiz.findById(quizId);
+    models.Quiz.update(req.quiz);
 
-    if (quiz) {
-        quiz.question = req.body.question;
-        quiz.answer = req.body.answer;
-
-        models.Quiz.update(quiz);
-
-        res.redirect('/quizzes/' + quizId);
-    } else {
-        next(new Error('No existe ningún quiz con id=' + quizId));
-    }
+    res.redirect('/quizzes/' + req.quiz.id);
 };
 
 
 // DELETE /quizzes/:quizId
 exports.destroy = function (req, res, next) {
 
-    var quizId = Number(req.params.quizId);
+    models.Quiz.destroy(req.quiz);
 
-    var quiz = models.Quiz.findById(quizId);
-
-    if (quiz) {
-        models.Quiz.destroy(quiz);
-
-        res.redirect('/quizzes');
-    } else {
-        next(new Error('No existe ningún quiz con id=' + quizId));
-    }
+    res.redirect('/quizzes');
 };
 
 
@@ -111,18 +97,10 @@ exports.play = function (req, res, next) {
 
     var answer = req.query.answer || '';
 
-    var quizId = Number(req.params.quizId);
-
-    var quiz = models.Quiz.findById(quizId);
-
-    if (quiz) {
-        res.render('quizzes/play', {
-            quiz: quiz,
-            answer: answer
-        });
-    } else {
-        next(new Error('No existe ningún quiz con id=' + quizId));
-    }
+    res.render('quizzes/play', {
+        quiz: req.quiz,
+        answer: answer
+    });
 };
 
 
@@ -131,19 +109,11 @@ exports.check = function (req, res, next) {
 
     var answer = req.query.answer || "";
 
-    var quizId = Number(req.params.quizId);
+    var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 
-    var quiz = models.Quiz.findById(quizId);
-
-    var result = answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim();
-
-    if (quiz) {
-        res.render('quizzes/result', {
-            quiz: quiz,
-            result: result,
-            answer: answer
-        });
-    } else {
-        next(new Error('No existe ningún quiz con id=' + quizId));
-    }
+    res.render('quizzes/result', {
+        quiz: req.quiz,
+        result: result,
+        answer: answer
+    });
 };
