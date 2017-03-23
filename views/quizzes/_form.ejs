@@ -1,0 +1,16 @@
+
+<div class="wideRow">
+<label for="preg"  class="itemNarrow">Pregunta:</label>
+<input type="text" class="itemWide" id="preg" name="question" value="<%= quiz.question %>" placeholder="Pregunta" autocomplete="off"/>
+</div>
+
+
+<div class="wideRow">
+<label for="resp"  class="itemNarrow">Respuesta:</label>
+<input type="text" class="itemWide" id="resp" name="answer" value="<%= quiz.answer %>" placeholder="Respuesta" autocomplete="off"/>
+</div>
+
+<br/>
+<a href="/quizzes"><button type="button">Cancelar</button></a>
+
+<input type="submit" value="Salvar">

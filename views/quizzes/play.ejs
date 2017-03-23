@@ -1,0 +1,18 @@
+
+<h1>
+    Jugar:
+</h1>
+
+<form method="get" action="/quizzes/<%= quiz.id %>/check">
+    <p>
+        Pregunta: <b><%= quiz.question %></b>
+    </p>
+
+
+    <div class="wideRow">
+        <input type="text" class="itemWide" name="answer" value="<%= answer %>" placeholder="Respuesta" autocomplete="off"/>
+        <input type="submit" class="itemNarrow" value="Comprobar">
+    </div>
+</form>
+
+<a href="/quizzes"><button>Volver</button></a>
