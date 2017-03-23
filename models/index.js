@@ -27,4 +27,13 @@ var sequelize = new Sequelize(url, {storage: storage});
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
 
 
+// Importar la definicion de la tabla Tips de tips.js
+var Tip = sequelize.import(path.join(__dirname,'tip'));
+
+// Relaciones entre modelos
+Tip.belongsTo(Quiz);
+Quiz.hasMany(Tip);
+
+
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
+exports.Tip = Tip; // exportar definición de tabla Tips

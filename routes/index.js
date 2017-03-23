@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
+var tipController = require('../controllers/tip_controller');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,5 +32,8 @@ router.delete('/quizzes/:quizId(\\d+)',    quizController.destroy);
 router.get('/quizzes/:quizId(\\d+)/play',  quizController.play);
 router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 
+
+router.get('/quizzes/:quizId(\\d+)/tips/new',  tipController.new);
+router.post('/quizzes/:quizId(\\d+)/tips',     tipController.create);
 
 module.exports = router;
