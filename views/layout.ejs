@@ -16,7 +16,19 @@
 </head>
 <body>
 <div id="page">
+
     <header class="main" id="mainHeader">
+
+        <div class="right">
+            <% if (!session.user) { %>
+                <a href="/users/new">Registrarse</a>
+                <a href="/session">Login</a>
+            <% } else { %>
+                <a href="/users/<%= session.user.id %>"><%= session.user.username %></a>
+                <a href="/session?_method=DELETE">Logout</a>
+            <% } %>
+        </div>
+
         <h1>Quiz<span class="no-narrow">: el juego de las preguntas</span></h1>
     </header>
 
