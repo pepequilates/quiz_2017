@@ -51,6 +51,49 @@ exports.loginRequired = function (req, res, next) {
 };
 
 
+// MW que permite pasar solamente si el usuario logeado es admin.
+exports.adminRequired = function(req, res, next){
+
+    var isAdmin      = req.session.user.isAdmin;
+
+    if (isAdmin) {
+        next();
+    } else {
+        console.log('Ruta prohibida: el usuario logeado no es administrador.');
+        res.send(403);    }
+};
+
+// MW que permite pasar solo si el usuario logeado es:
+//   - admin
+//   - o es el usuario a gestionar.
+exports.adminOrMyselfRequired = function(req, res, next){
+
+    var isAdmin  = req.session.user.isAdmin;
+    var isMyself = req.user.id === req.session.user.id;
+
+    if (isAdmin || isMyself) {
+        next();
+    } else {
+        console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
+        res.send(403);    }
+};
+
+// MW que permite pasar solo si el usuario logeado es:
+//   - admin
+//   - y no es el usuario a gestionar.
+exports.adminAndNotMyselfRequired = function(req, res, next){
+
+    var isAdmin   = req.session.user.isAdmin;
+    var isAnother = req.user.id !== req.session.user.id;
+
+    if (isAdmin && isAnother) {
+        next();
+    } else {
+        console.log('Ruta prohibida: es el usuario logeado o no es administrador.');
+        res.send(403);    }
+};
+
+
 /*
  * Autenticar un usuario: Comprueba si el usuario esta registrado en users
  *
@@ -104,6 +147,7 @@ exports.create = function(req, res, next) {
             req.session.user = {
                 id:user.id,
                 username:user.username,
+                isAdmin:user.isAdmin,
                 expires: Date.now() + maxIdleTime
             };
 

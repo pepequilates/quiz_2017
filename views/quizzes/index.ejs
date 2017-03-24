@@ -22,18 +22,20 @@
         </td>
 
         <% if (session.user) { %>
-            <td>
-                <a href="/quizzes/<%= quiz.id %>"><button>ver</button></a>
-            </td>
-            <td>
-                <a href="/quizzes/<%= quiz.id %>/edit"><button>editar</button></a>
-            </td>
-            <td>
-                <a href="/quizzes/<%= quiz.id %>?_method=DELETE"
-                   onClick="return confirm('Borrar: <%= quiz.question %>');">
-                    <button>borrar</button>
-                </a>
-            </td>
+            <% if (session.user.isAdmin || session.user.id === quiz.AuthorId) { %>
+                <td>
+                    <a href="/quizzes/<%= quiz.id %>"><button>ver</button></a>
+                </td>
+                <td>
+                    <a href="/quizzes/<%= quiz.id %>/edit"><button>editar</button></a>
+                </td>
+                <td>
+                    <a href="/quizzes/<%= quiz.id %>?_method=DELETE"
+                       onClick="return confirm('Borrar: <%= quiz.question %>');">
+                        <button>borrar</button>
+                    </a>
+                </td>
+            <% } %>
         <% } %>
     </tr>
     <% } %>
