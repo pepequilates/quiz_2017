@@ -29,14 +29,24 @@ exports.load = function (req, res, next, quizId) {
 // GET /quizzes
 exports.index = function (req, res, next) {
 
-    var countOptions = {};
+    var countOptions = {
+        where: {}
+    };
+
+    var title = "Preguntas";
 
     // Busquedas:
     var search = req.query.search || '';
     if (search) {
         var search_like = "%" + search.replace(/ +/g,"%") + "%";
 
-        countOptions.where = {question: { $like: search_like }};
+        countOptions.where.question = { $like: search_like };
+    }
+
+    // Si existe req.user, mostrar solo sus preguntas.
+    if (req.user) {
+        countOptions.where.AuthorId = req.user.id;
+        title = "Preguntas de " + req.user.username;
     }
 
     models.Quiz.count(countOptions)
@@ -64,7 +74,8 @@ exports.index = function (req, res, next) {
     .then(function (quizzes) {
         res.render('quizzes/index.ejs', {
             quizzes: quizzes,
-            search: search
+            search: search,
+            title: title
         });
     })
     .catch(function (error) {
