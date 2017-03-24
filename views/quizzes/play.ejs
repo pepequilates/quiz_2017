@@ -25,7 +25,9 @@
     Pistas:
 </h1>
 
-<% include ../tips/new %>
+<% if (session.user) { %>
+    <% include ../tips/new %>
+<% } %>
 
 <% var tips = quiz.Tips; %>
 

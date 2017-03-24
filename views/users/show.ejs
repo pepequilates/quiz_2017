@@ -15,17 +15,19 @@
 
 </ul>
 
-<p>
-    <a href="/users/<%= user.id %>/edit">
-        <button type="button"> Editar</button>
-    </a>
+<% if (session.user) { %>
+    <p>
+        <a href="/users/<%= user.id %>/edit">
+            <button type="button"> Editar</button>
+        </a>
 
-    <a href="/users/<%= user.id %>?_method=DELETE">
-        <button type="button"
-                onClick="return confirm('Borrar cuenta: <%= user.username %>');">
-            Borrar
-        </button>
-    </a>
-</p>
+        <a href="/users/<%= user.id %>?_method=DELETE">
+            <button type="button"
+                    onClick="return confirm('Borrar cuenta: <%= user.username %>');">
+                Borrar
+            </button>
+        </a>
+    </p>
+<% } %>
 
 <a href="/goback"><button type="button">Volver</button></a>
