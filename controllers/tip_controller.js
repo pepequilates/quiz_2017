@@ -2,6 +2,24 @@ var models = require('../models');
 var Sequelize = require('sequelize');
 
 
+// Autoload la pista asociado a :tipId
+exports.load = function (req, res, next, tipId) {
+
+    models.Tip.findById(tipId)
+    .then(function (tip) {
+        if (tip) {
+            req.tip = tip;
+            next();
+        } else {
+            next(new Error('No existe tipId=' + tipId));
+        }
+    })
+    .catch(function (error) {
+        next(error);
+    });
+};
+
+
 // GET /quizzes/:quizId/tips/new
 exports.new = function (req, res, next) {
 
@@ -44,6 +62,37 @@ exports.create = function (req, res, next) {
     })
     .catch(function (error) {
         req.flash('error', 'Error al crear una Pista: ' + error.message);
+        next(error);
+    });
+};
+
+
+// GET /quizzes/:quizId/tips/:tipId/accept
+exports.accept = function (req, res, next) {
+
+    req.tip.accepted = true;
+
+    req.tip.save(["accepted"])
+    .then(function (tip) {
+        req.flash('success', 'Pista aceptada con éxito.');
+        res.redirect('/quizzes/' + req.params.quizId);
+    })
+    .catch(function (error) {
+        req.flash('error', 'Error al aceptar una Pista: ' + error.message);
+        next(error);
+    });
+};
+
+
+// DELETE /quizzes/:quizId/tips/:tipId
+exports.destroy = function (req, res, next) {
+
+    req.tip.destroy()
+    .then(function () {
+        req.flash('success', 'Pista eliminada con éxito.');
+        res.redirect('/quizzes/' + req.params.quizId);
+    })
+    .catch(function (error) {
         next(error);
     });
 };

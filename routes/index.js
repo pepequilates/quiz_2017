@@ -50,6 +50,7 @@ router.get('/author', function(req, res, next) {
 // Autoload de rutas que usen :quizId
 router.param('quizId', quizController.load);
 router.param('userId', userController.load);
+router.param('tipId',  tipController.load);
 
 
 
@@ -85,7 +86,15 @@ router.get('/quizzes/:quizId(\\d+)/play',  quizController.play);
 router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 
 
-router.get('/quizzes/:quizId(\\d+)/tips/new',  sessionController.loginRequired, tipController.new);
-router.post('/quizzes/:quizId(\\d+)/tips',     sessionController.loginRequired, tipController.create);
+router.get('/quizzes/:quizId(\\d+)/tips/new', sessionController.loginRequired, tipController.new);
+router.post('/quizzes/:quizId(\\d+)/tips', sessionController.loginRequired, tipController.create);
+router.put('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)/accept',
+    sessionController.loginRequired,
+    tipController.accept);
+router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
+    sessionController.loginRequired,
+    tipController.destroy);
+
+
 
 module.exports = router;

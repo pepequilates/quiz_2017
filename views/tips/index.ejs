@@ -2,6 +2,24 @@
 
 <ul>
     <% for (var i in tips) { %>
-       <li> <%= tips[i].text %> </li>
+        <% var tip = tips[i]; %>
+
+        <li>
+
+             <% if (tip.accepted) { %>
+
+                 <%= tip.text %>
+
+             <% } else if (session.user) { %>
+
+                 <%= tip.text %>
+
+                 <a href="/quizzes/<%= quizId %>/tips/<%= tip.id %>/accept?_method=PUT"><button>Aceptar</button></a>
+
+             <% } %>
+
+             <a href="/quizzes/<%= quizId %>/tips/<%= tip.id %>?_method=DELETE"><button>Borrar</button></a>
+
+        </li>
     <% } %>
 </ul>
