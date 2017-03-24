@@ -6,7 +6,12 @@ var paginate = require('../helpers/paginate').paginate;
 // Autoload el quiz asociado a :quizId
 exports.load = function (req, res, next, quizId) {
 
-    models.Quiz.findById(quizId, { include: [ models.Tip ] })
+    models.Quiz.findById(quizId, {
+        include: [
+            models.Tip,
+            {model: models.User, as: 'Author'}
+        ]
+    })
     .then(function (quiz) {
         if (quiz) {
             req.quiz = quiz;
@@ -52,6 +57,7 @@ exports.index = function (req, res, next) {
 
         findOptions.offset = items_per_page * (pageno - 1);
         findOptions.limit = items_per_page;
+        findOptions.include = [{model: models.User, as: 'Author'}];
 
         return models.Quiz.findAll(findOptions);
     })
@@ -86,13 +92,16 @@ exports.new = function (req, res, next) {
 // POST /quizzes/create
 exports.create = function (req, res, next) {
 
+    var authorId = req.session.user && req.session.user.id || 0;
+
     var quiz = models.Quiz.build({
         question: req.body.question,
-        answer: req.body.answer
+        answer: req.body.answer,
+        AuthorId: authorId
     });
 
     // guarda en DB los campos pregunta y respuesta de quiz
-    quiz.save({fields: ["question", "answer"]})
+    quiz.save({fields: ["question", "answer", "AuthorId"]})
     .then(function (quiz) {
         req.flash('success', 'Quiz creado con éxito.');
         res.redirect('/quizzes/' + quiz.id);

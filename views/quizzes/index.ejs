@@ -17,6 +17,9 @@
         <td>
             <a href="/quizzes/<%= quiz.id %>/play"><%= quiz.question %></a>
         </td>
+        <td colspan="2">
+            <small> (by <%= quiz.Author ? quiz.Author.username : "Anómino" %>) </small>
+        </td>
         <td>
             <a href="/quizzes/<%= quiz.id %>"><button>ver</button></a>
         </td>
