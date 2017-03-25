@@ -64,6 +64,20 @@ exports.adminRequired = function(req, res, next){
 };
 
 // MW que permite pasar solo si el usuario logeado es:
+//   - el usuario a gestionar.
+exports.myselfRequired = function(req, res, next){
+
+    var isMyself = req.user.id === req.session.user.id;
+
+    if (isMyself) {
+        next();
+    } else {
+        console.log('Ruta prohibida: no es el usuario logeado.');
+        res.send(403);    }
+};
+
+
+// MW que permite pasar solo si el usuario logeado es:
 //   - admin
 //   - o es el usuario a gestionar.
 exports.adminOrMyselfRequired = function(req, res, next){
@@ -77,6 +91,7 @@ exports.adminOrMyselfRequired = function(req, res, next){
         console.log('Ruta prohibida: no es el usuario logeado, ni un administrador.');
         res.send(403);    }
 };
+
 
 // MW que permite pasar solo si el usuario logeado es:
 //   - admin

@@ -8,6 +8,7 @@ var quizController = require('../controllers/quiz_controller');
 var tipController = require('../controllers/tip_controller');
 var userController = require('../controllers/user_controller');
 var sessionController = require('../controllers/session_controller');
+var favouriteController = require('../controllers/favourite_controller');
 
 //-----------------------------------------------------------
 
@@ -135,6 +136,24 @@ router.put('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)/accept',
 router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
     sessionController.loginRequired,
     tipController.destroy);
+
+
+// Rutas de Favoritos
+router.get('/users/:userId(\\d+)/favourites',
+    sessionController.loginRequired,
+    sessionController.myselfRequired,
+    favouriteController.index);
+
+router.put('/users/:userId(\\d+)/favourites/:quizId(\\d+)',
+    sessionController.loginRequired,
+    sessionController.adminOrMyselfRequired,
+    favouriteController.add);
+
+router.delete('/users/:userId(\\d+)/favourites/:quizId(\\d+)',
+    sessionController.loginRequired,
+    sessionController.adminOrMyselfRequired,
+    favouriteController.del);
+
 
 
 module.exports = router;

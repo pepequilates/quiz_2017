@@ -1,0 +1,43 @@
+
+<!--
+    Añadir la estrella adecuada al quiz pasado como parametro.
+
+    Solo se muestra la estrella si hay usuario logueado.
+    Dependiendo del valor del atributo favourite, la estrella es gris o amarilla.
+    Se registra un onclick para enviar peticiones AJAX y repintar la estrella si OK.
+-->
+
+<% if (session.user) { %>
+
+<a href=""> <img id="star<%= quiz.id %>" /> </a>
+
+<br />
+
+<script>
+    (function() {
+        var state =  <%= quiz.Favourites && quiz.Favourites.length > 0 %>; // Esta solo el usuario logeado o nadie.
+        var userId = <%= session.user.id %>;
+        var quizId = <%= quiz.id %>;
+
+        var img = document.getElementById("star<%= quiz.id %>");
+        img.src = state ? "/images/star_yellow.png" : "/images/star_grey.png";
+        img.onclick = function() {
+            var request = new XMLHttpRequest();
+            var method = state ? "DELETE" : "PUT";
+            var url = "/users/" + userId + "/favourites/" + quizId + "?_method=" + method;
+            request.open("POST", url);
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+                    img.src = state ? "/images/star_grey.png" : "/images/star_yellow.png";
+                    state = !state;
+                }
+            };
+            request.send();
+            return false;
+        };
+    })();
+</script>
+
+<% } %>
+

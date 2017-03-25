@@ -38,6 +38,9 @@
         <% if (session.user) { %>
             <a href="/users/<%= session.user.id %>/quizzes">Mis Preguntas</a>
         <% } %>
+        <% if (session.user) { %>
+            <a href="/users/<%= session.user.id %>/favourites">Mis Favoritos</a>
+        <% } %>
         <a href="/author">Créditos</a>
         <% if (session.user) { %>
            <a href="/users">Usuarios</a>

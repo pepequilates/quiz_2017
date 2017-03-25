@@ -4,6 +4,7 @@
     Jugar:
 </h1>
 
+
 <form method="get" action="/quizzes/<%= quiz.id %>/check">
 
     <div class="quizItem">
@@ -14,6 +15,8 @@
         </div>
 
         <div>
+            <% include ../favourites/_stars.ejs %>
+            <br/>
             <b><%= quiz.question %></b>
 
             <div class="wideRow">

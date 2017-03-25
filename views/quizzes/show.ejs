@@ -3,6 +3,7 @@
     Ver pregunta:
 </h1>
 
+
 <div class="quizItem">
 
     <div>
@@ -11,6 +12,8 @@
     </div>
 
     <div>
+        <% include ../favourites/_stars.ejs %>
+        <br/>
         Pregunta: <b><%= quiz.question %></b>
         <br />
         Respuesta: <b><%= quiz.answer %></b>

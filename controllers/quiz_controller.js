@@ -17,13 +17,25 @@ var cloudinary_upload_options = {
 // Autoload el quiz asociado a :quizId
 exports.load = function (req, res, next, quizId) {
 
-    models.Quiz.findById(quizId, {
+    var options = {
         include: [
             models.Tip,
             models.Attachment,
             {model: models.User, as: 'Author'}
         ]
-    })
+    };
+
+    // Para usuarios logeados: incluir los favoritos de la pregunta filtrando por
+    // el usuario logeado con un OUTER JOIN.
+    if (req.session.user) {
+        options.include.push({
+            model: models.Favourite,
+            where: {UserId: req.session.user.id},
+            required: false  // OUTER JOIN
+        });
+    }
+
+    models.Quiz.findById(quizId, options)
     .then(function (quiz) {
         if (quiz) {
             req.quiz = quiz;
@@ -54,6 +66,7 @@ exports.adminOrAuthorRequired = function(req, res, next){
 
 
 // GET /quizzes
+// GET /users/:userId/quizzes
 exports.index = function (req, res, next) {
 
     var countOptions = {
@@ -72,8 +85,13 @@ exports.index = function (req, res, next) {
 
     // Si existe req.user, mostrar solo sus preguntas.
     if (req.user) {
-        countOptions.where.AuthorId = req.user.id;
-        title = "Preguntas de " + req.user.username;
+        countOptions.where = {AuthorId: req.user.id};
+
+        if (req.session.user && req.session.user.id == req.user.id) {
+            title = "Mis Preguntas";
+        } else {
+            title = "Preguntas de " + req.user.username;
+        }
     }
 
     models.Quiz.count(countOptions)
@@ -81,7 +99,7 @@ exports.index = function (req, res, next) {
 
         // Paginacion:
 
-        var items_per_page = 10;
+        var items_per_page = 8;
 
         // La pagina a mostrar viene en la query
         var pageno = parseInt(req.query.pageno) || 1;
@@ -94,14 +112,26 @@ exports.index = function (req, res, next) {
 
         findOptions.offset = items_per_page * (pageno - 1);
         findOptions.limit = items_per_page;
+
         findOptions.include = [
             models.Attachment,
             {model: models.User, as: 'Author'}
         ];
 
+        // Para usuarios logeados: incluir los fans de las preguntas filtrando por
+        // el usuario logeado con un OUTER JOIN.
+        if (req.session.user) {
+            findOptions.include.push({
+                model: models.Favourite,
+                where: {UserId: req.session.user.id},
+                required: false  // OUTER JOIN
+            });
+        }
+
         return models.Quiz.findAll(findOptions);
     })
     .then(function (quizzes) {
+
         res.render('quizzes/index.ejs', {
             quizzes: quizzes,
             search: search,
