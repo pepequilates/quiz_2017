@@ -11,6 +11,19 @@
 </div>
 
 <br/>
+
+<label for="img">Adjuntar fichero:</label>
+<input type="file" id="img" name="image"/>
+
+<br/>
+
+<% if (quiz.id) { %>
+<label for="img">Mantener fichero adjunto actual:</label>
+<input type="checkbox" name="keepAttachment" value="1" checked>
+<% } %>
+
+<br/>
+
 <a href="/goback"><button type="button">Cancelar</button></a>
 
 <input type="submit" value="Salvar">
