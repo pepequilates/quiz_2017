@@ -1,6 +1,7 @@
 var models = require("../models");
 var Sequelize = require('sequelize');
 
+var paginate = require('../helpers/paginate').paginate;
 
 // Autoload el quiz asociado a :quizId
 exports.load = function (req, res, next, quizId) {
@@ -23,7 +24,27 @@ exports.load = function (req, res, next, quizId) {
 // GET /quizzes
 exports.index = function (req, res, next) {
 
-    models.Quiz.findAll()
+    models.Quiz.count()
+    .then(function (count) {
+
+        // Paginacion:
+
+        var items_per_page = 10;
+
+        // La pagina a mostrar viene en la query
+        var pageno = parseInt(req.query.pageno) || 1;
+
+        // Crear un string con el HTML que pinta la botonera de paginacion.
+        // Lo añado como una variable local de res para que lo pinte el layout de la aplicacion.
+        res.locals.paginate_control = paginate(count, items_per_page, pageno, req.url);
+
+        var findOptions = {
+            offset: items_per_page * (pageno - 1),
+            limit: items_per_page
+        };
+
+        return models.Quiz.findAll(findOptions);
+    })
     .then(function (quizzes) {
         res.render('quizzes/index.ejs', {quizzes: quizzes});
     })
