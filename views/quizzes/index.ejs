@@ -1,4 +1,11 @@
 
+<div class="right">
+    <form method="get" action="/quizzes">
+        <input type="text" name="search" value="<%= locals.search || '' %>" placeholder="pregunta a buscar" autocomplete="off" />
+        <input type="submit" value="Buscar">
+    </form>
+</div>
+
 <h1>
     Preguntas:
 </h1>

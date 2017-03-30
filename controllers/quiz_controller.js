@@ -24,7 +24,17 @@ exports.load = function (req, res, next, quizId) {
 // GET /quizzes
 exports.index = function (req, res, next) {
 
-    models.Quiz.count()
+    var countOptions = {};
+
+    // Busquedas:
+    var search = req.query.search || '';
+    if (search) {
+        var search_like = "%" + search.replace(/ +/g,"%") + "%";
+
+        countOptions.where = {question: { $like: search_like }};
+    }
+
+    models.Quiz.count(countOptions)
     .then(function (count) {
 
         // Paginacion:
@@ -38,15 +48,18 @@ exports.index = function (req, res, next) {
         // Lo añado como una variable local de res para que lo pinte el layout de la aplicacion.
         res.locals.paginate_control = paginate(count, items_per_page, pageno, req.url);
 
-        var findOptions = {
-            offset: items_per_page * (pageno - 1),
-            limit: items_per_page
-        };
+        var findOptions = countOptions;
+
+        findOptions.offset = items_per_page * (pageno - 1);
+        findOptions.limit = items_per_page;
 
         return models.Quiz.findAll(findOptions);
     })
     .then(function (quizzes) {
-        res.render('quizzes/index.ejs', {quizzes: quizzes});
+        res.render('quizzes/index.ejs', {
+            quizzes: quizzes,
+            search: search
+        });
     })
     .catch(function (error) {
         next(error);
