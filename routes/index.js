@@ -92,9 +92,9 @@ router.get('/users/:userId(\\d+)/quizzes', quizController.index);     // ver las
 
 
 // Definición de rutas de /quizzes
-router.get('/quizzes',
+router.get('/quizzes.:format?',
     quizController.index);
-router.get('/quizzes/:quizId(\\d+)',
+router.get('/quizzes/:quizId(\\d+).:format?',
     quizController.show);
 router.get('/quizzes/new',
     sessionController.loginRequired,

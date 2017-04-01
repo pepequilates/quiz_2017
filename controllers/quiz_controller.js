@@ -132,12 +132,26 @@ exports.index = function (req, res, next) {
     })
     .then(function (quizzes) {
 
-        res.render('quizzes/index.ejs', {
-            quizzes: quizzes,
-            search: search,
-            cloudinary: cloudinary,
-            title: title
-        });
+        var format = (req.params.format || 'html').toLowerCase();
+
+        switch (format) {
+            case 'html':
+                res.render('quizzes/index.ejs', {
+                    quizzes: quizzes,
+                    search: search,
+                    cloudinary: cloudinary,
+                    title: title
+                });
+                break;
+
+            case 'json':
+                res.json(quizzes);
+                break;
+
+            default:
+                console.log('No se soporta el formato \".'+format+'\".');
+                res.sendStatus(406);
+        }
     })
     .catch(function (error) {
         next(error);
@@ -148,10 +162,24 @@ exports.index = function (req, res, next) {
 // GET /quizzes/:quizId
 exports.show = function (req, res, next) {
 
-    res.render('quizzes/show', {
-        quiz: req.quiz,
-        cloudinary: cloudinary
-    });
+    var format = (req.params.format || 'html').toLowerCase();
+
+    switch (format) {
+        case 'html':
+            res.render('quizzes/show', {
+                quiz: req.quiz,
+                cloudinary: cloudinary
+            });
+            break;
+
+        case 'json':
+            res.json(req.quiz);
+            break;
+
+        default:
+            console.log('No se soporta el formato \".'+format+'\".');
+            res.sendStatus(406);
+    }
 };
 
 
