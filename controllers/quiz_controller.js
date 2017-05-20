@@ -166,24 +166,31 @@ exports.destroy = function (req, res, next) {
 exports.play = function (req, res, next) {
 
     var answer = req.query.answer || '';
-
+    var quizId=Number(req.params.quizId);
+    var quiz=models.Quiz.findById(quizId);
+if (quiz){
     res.render('quizzes/play', {
-        quiz: req.quiz,
+        quiz:quiz,
         answer: answer
     });
+ }else{next(new Error('No exite ningun quiz con id=' + quizId));}
 };
+    
+
 
 
 // GET /quizzes/:quizId/check
 exports.check = function (req, res, next) {
 
     var answer = req.query.answer || "";
-
+    var quizId =Number(req.params.quizId);
+    var quiz =models.Quiz.findById(quizId);
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
-
+if (quiz){
     res.render('quizzes/result', {
-        quiz: req.quiz,
+        quiz:quiz,
         result: result,
         answer: answer
     });
+ }else{next(new Error('No exite ningun quiz con id=' + quizId));}
 };
