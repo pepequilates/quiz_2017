@@ -248,32 +248,3 @@ exports.randomcheck = function (req, res, next) {
         answer: answer
     });
 };
-/*exports.randomplay = function (req, res, next) {
-    var answer = req.query.answer || '';
-   
-
-    var array =[];
-    var contador= 5;
-    for( i=1;i<=contador;i++){
-        array.push(i);
-     }
-    var aleatorio = Math.floor(Math.random()*(array.length)); 
-    var quizId=array[aleatorio];
-    models.Quiz.findById(quizId)
-    .then(function (quiz) {
-        if (quiz) {
-            res.render('quizzes/randomplay', {
-                quiz: quiz,
-                answer: answer
-    });
-            next();
-        } else {
-            throw new Error('No existe ningún quiz con id=' + quizId);
-        }
-    })
-    .catch(function (error) {
-        next(error);
-    });
-    
- 
-};*/
