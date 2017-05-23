@@ -240,7 +240,10 @@ exports.randomcheck = function (req, res, next) {
 
     if (result) {
         req.session.score++;
+        
+  
     }
+    else{req.session.score=0;}
 
     res.render('quizzes/randomresult', {
         score: req.session.score,
