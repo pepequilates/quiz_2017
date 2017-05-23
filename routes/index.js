@@ -12,6 +12,7 @@ router.get('/', function(req, res, next) {
 router.get('/author', function(req, res, next) {
     res.render('author');
 });
+<<<<<<< HEAD
 /*router.get('/quizzes/randomplay', function(req, res, next) {
     res.render('quizzes/randomplay');
 });*/
@@ -36,5 +37,11 @@ router.get('/quizzes/:quizId(\\d+)/check', quizController.check);
 
 router.get('/quizzes/randomplay', quizController.randomplay);
 router.get('/quizzes/randomcheck/:quizId(\\d+)',	quizController.randomcheck);
+=======
+router.get('/Ayuda', function(req, res, next) {
+    res.render('Ayuda');
+});
+
+>>>>>>> practica51
 
 module.exports = router;
