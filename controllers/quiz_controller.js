@@ -115,6 +115,7 @@ exports.create = function (req, res, next) {
 
 // GET /quizzes/:quizId/edit
 exports.edit = function (req, res, next) {
+  
 
     res.render('quizzes/edit', {quiz: req.quiz});
 };
@@ -164,31 +165,26 @@ exports.destroy = function (req, res, next) {
 
 // GET /quizzes/:quizId/play
 exports.play = function (req, res, next) {
-
     var answer = req.query.answer || '';
-    var quizId=Number(req.params.quizId);
-    var quiz=models.Quiz.findById(quizId);
 if (quiz){
     res.render('quizzes/play', {
-        quiz:quiz,
+        quiz: req.quiz,
         answer: answer
     });
- }else{next(new Error('No exite ningun quiz con id=' + quizId));}
+ }
+ else{next(new Error('No exite ningun quiz con id=' + quizId));}
 };
-    
-
 
 
 // GET /quizzes/:quizId/check
 exports.check = function (req, res, next) {
 
     var answer = req.query.answer || "";
-    var quizId =Number(req.params.quizId);
-    var quiz =models.Quiz.findById(quizId);
+
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
 if (quiz){
     res.render('quizzes/result', {
-        quiz:quiz,
+        quiz: req.quiz,
         result: result,
         answer: answer
     });
