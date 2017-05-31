@@ -4,6 +4,7 @@
     <small> (by <%= quiz.Author ? quiz.Author.username : "Anómino" %>) </small>
 </div>
 
+
 <h1>
     Jugar:
 </h1>
@@ -24,6 +25,7 @@
 <h1>
     Pistas:
 </h1>
+
 
 <% if (session.user) { %>
     <% include ../tips/new %>

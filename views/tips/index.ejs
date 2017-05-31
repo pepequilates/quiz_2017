@@ -5,12 +5,12 @@
         <% var tip = tips[i]; %>
 
         <li>
-
+		
             <% if (tip.accepted ||
                     (session.user && (session.user.isAdmin || (quizAuthorId && quizAuthorId === session.user.id)))) { %>
 
                 <%= tip.text %>
-
+		<small><span id="author"> (by <%= tip.AuthorId %> </span></small>
             <% } %>
 
             <% if (!tip.accepted &&
@@ -25,6 +25,7 @@
                 <a href="/quizzes/<%= quizId %>/tips/<%= tip.id %>?_method=DELETE"><button>Borrar</button></a>
 
             <% } %>
+
 
         </li>
     <% } %>
