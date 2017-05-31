@@ -41,13 +41,13 @@ exports.new = function (req, res, next) {
 // POST /quizzes/:quizId/tips
 exports.create = function (req, res, next) {
 
-	var authorId = req.session.user && req.session.user.id || 0;
+    var authorId = req.session.user && req.session.user.id || 0;
 
     var tip = models.Tip.build(
         {
             text: req.body.text,
             QuizId: req.quiz.id,
-	    AuthorId: athorId
+	    AuthorId: authorId
         });
 
     tip.save()
