@@ -25,12 +25,7 @@ module.exports = {
                 salt: 'bbbb',
                 createdAt: new Date(), updatedAt: new Date()
             },
-	    {
-                username: 'LucasDC',
-                password: encryptPassword('123', 'cccc'),
-                salt: 'ccc',
-                createdAt: new Date(), updatedAt: new Date()
-            }
+	    
         ]);
     },
 

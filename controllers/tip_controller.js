@@ -47,7 +47,7 @@ exports.create = function (req, res, next) {
         {
             text: req.body.text,
             QuizId: req.quiz.id,
-	    AuthorId: authorId
+	    AuthorId: req.session.user.id
         });
 
     tip.save()
