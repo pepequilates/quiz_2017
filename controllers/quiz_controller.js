@@ -275,13 +275,14 @@ exports.randomcheck = function (req, res, next) {
     var score=req.session.score;
     if (result) {
         req.session.score++;
+        score++;
        
         }
     else{req.session.score=0;
     	req.session.questions=[-1];}
 
     res.render('quizzes/randomresult', {
-        score: req.session.score,
+        score: score,
         result: result,
         answer: answer
     });
