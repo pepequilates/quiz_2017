@@ -132,4 +132,12 @@ router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
     tipController.destroy);
 
 
+router.get('/quizzes/randomplay', quizController.randomplay);
+router.get('/quizzes/randomcheck/:quizId(\\d+)',	quizController.randomcheck);
+
+router.get('/Ayuda', function(req, res, next) {
+    res.render('Ayuda');
+});
+
+
 module.exports = router;

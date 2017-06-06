@@ -50,3 +50,14 @@ Tip.belongsTo(User, {as: 'Author', foreignKey: 'AuthorId'});
 exports.Quiz = Quiz; // exportar definición de tabla Quiz
 exports.Tip = Tip;   // exportar definición de tabla Tips
 exports.User = User; // exportar definición de tabla Users
+
+sequelize.sync()
+.then(function(){
+	console.log("creados");
+})
+.catch(function(error){
+	console.log("Error");
+});
+
+exports.Quiz = Quiz; // exportar definición de tabla Quiz
+
